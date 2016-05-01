@@ -86,7 +86,7 @@ int main() {
 
   cout << "Data loaded.  Executing sort..." << endl;
 
-  clock_t t1 = clock();
+  clock_t t1 = clock(); 
   sortDataList(theList);
   clock_t t2 = clock();
   double timeDiff = ((double) (t2 - t1)) / CLOCKS_PER_SEC;
@@ -102,6 +102,10 @@ int main() {
 
 // You may add global variables, functions, and/or
 // class defintions here if you wish.
+
+/*
+ * CODE FROM HERE WAS MADE BY KRISHNA THIYAGARAJAN
+ */
 
 // QuickSort T1, T2, Radix Sort T3, Insertion Sort T4
 
@@ -137,10 +141,26 @@ public:
 //Public Variables Declaration
 list<Data *>::iterator startIterator; 
 list<Data *>::iterator endIterator;
-unsigned long long testArray[10];
 NodeTypeA ArrayOfA[2000000]; 
 NodeTypeB ArrayOfB[2000000];
 NodeTypeC ArrayOfC[2000000];
+int fileType; 
+
+void copyToOriginal(list<Data *> &l){
+  startIterator = l.begin(); 
+  endIterator = l.end(); 
+  int i = 0; 
+
+  while(startIterator != endIterator){
+    if(fileType == 3)
+      *startIterator = ArrayOfB[i].dataRef;
+    else if(fileType !=4)
+      *startIterator = ArrayOfA[i].dataRef;
+    else *startiterator = ArrayOfC[i].dataRef;
+    i++;
+    startIterator++;
+  }
+}
 
 bool CompareA(const NodeTypeA &first, const NodeTypeA &second){
   if(first.size != second.size)
@@ -155,20 +175,38 @@ bool CompareB(const NodeTypeB &first, const NodeTypeB &second){
 bool CompareC(const NodeTypeC &first, const NodeTypeC &second){
   if(first.post != second.post)
     return first.post < second.post;
-  else return first.pre < second.pre;
+  else return first.pre < second.pre; 
 }
 
 void insertionSort(int size){
+
+  for(int i = 1; i < size; i++){
+    int j= i -1;
+    NodeTypeC temp = ArrayOfC[i];
+
+    while(j >= 0 && CompareC(temp, ArrayOfC[j])){
+      ArrayOfC[j+1] = ArrayOfC[j];
+      j--;
+    }
+    ArrayOfC[j+1] = temp;
+    //Not sure if this works
+  }
 
 }
 
 void radixSort(int size){
   
+  int i;
+  int digit; 
+  int count;
+  for(int passNum = 0; passNum < 6; passNum++){
+    
+  }
+
 }
 
 void sortDataList(list<Data *> &l) {
   // Fill in this function
-  int fileType; 
   startIterator = l.begin();
   endIterator = l.end();
   endIterator--;
@@ -180,10 +218,11 @@ void sortDataList(list<Data *> &l) {
     if((*startIterator)->data.size()/sizeof(char) <= 7)
       fileType = 3;
     else{
-      testArray[0] = strtoull((startIterator*)->data.substr(0,8).c_str(),0,10);
+      unsigned long long testA, testB; 
+      testA = strtoull((startIterator*)->data.substr(0,8).c_str(),0,10);
       startIterator++;
-      testArray[1] = strtoull((startIterator*)->data.substr(0,8).c_str(),0,10);
-      if(testArray[0] == testArray[1])
+      testB= strtoull((startIterator*)->data.substr(0,8).c_str(),0,10);
+      if(testA == testB)
         fileType = 4;
       else fileType = 2;
     }
@@ -192,36 +231,60 @@ void sortDataList(list<Data *> &l) {
 
   startIterator = l.begin(); // Resets startIterator
 
-  //Arranges 
+  //Arranges Strings into Sortable Array
   if(fileType == 3){
-    for(int i = 0; i < listSize; i++, starIterator++){
+    for(int i = 0; i < listSize; i++, startIterator++){
       ArrayOfB[i] = NodeTypeB();
       ArrayOfB[i].dataRef = (*startIterator); 
       ArrayOfB[i].total = atof((*startIterator)->data.c_str());
     }
   }
   else if(type != 4){
-
+    int posOfDecimal; 
+    int strLength;
+    for(int i = 0; i < listSize; i++, startIterator++){
+      ArrayOfA[i] = NodeTypeA();
+      posOfDecimal = (*startIterator)->data.find('.');
+      if(posOfDecimal == 20){
+        ArrayOfA[i].size = 20;
+        ArrayOfA[i].post = strtoull((*startIterator)->data.substr(0,19).c_str(),0,10);
+        ArrayOfA[i].dataRef = (*startIterator)
+      }
+      else{
+        ArrayOfA[i].size = a;
+        ArrayOfA[i].post = strtoull((*startIterator)->data.substr(0,posOfDecimal).c_str(), 0, 10);
+        ArrayOfA[i].dataRef = (*startIterator);
+      }
+    }
   }
   else{
+    int posOfDecimal; 
+    for(int i = 0; i < listSize; i++, startIterator++){
+      ArrayOfC[i] = NodeTypeC();
+      posOfDecimal = (*startIterator)->data.find('.');
+      ArrayOfC[i].post = strtoull((*startIterator)->data.substr(posOfDecimal-16,17).c_str(), 0, 10);
+      ArrayOfC[i].pre = strtoull((*startIterator)->data.substr(posOfDecimal+1, 15).c_str(), 0, 10); 
+      ArrayOfC[i].dataRef = (*startIterator);
+    }
 
   }
 
   //Switch statement that sorts the list
   switch(fileType){
     case 1:
-      //QuickSort
-      break;
     case 2: 
-      // QuickSort
+      //QuickSort
+      sort(ArrayOfA, ArrayOfA + listSize, CompareA);
       break; 
     case 3: 
-      //RadixSort
+      radixSort(listSize);
       break; 
     case 4: 
-      //Insertion Sort
-      break; 
+      insertionSort(listSize);
+      break;
   };
+
+  copyToOriginal();
 
   cout << "Sorting complete!" << endl;
 }
