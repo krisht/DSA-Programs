@@ -254,7 +254,7 @@ void sortDataList(list<Data *> &l) {
       ArrayOfB[i] = NodeTypeB();
       ArrayOfB[i].dataRef = (*startIterator); 
       ArrayOfB[i].total = atof((*startIterator)->data.c_str());
-      ArrayOfB[i].intRep = (int)(atof((*startIterator)->data.c_str())*1000);
+      ArrayOfB[i].intRep = (int)(ArrayOfB[i].total * 1000); 
     }
   }
   else if(type != 4){
@@ -269,7 +269,7 @@ void sortDataList(list<Data *> &l) {
         ArrayOfA[i].dataRef = (*startIterator)
       }
       else{
-        ArrayOfA[i].size = a;
+        ArrayOfA[i].size = posOfDecimal;
         ArrayOfA[i].post = strtoull((*startIterator)->data.substr(0,posOfDecimal).c_str(), 0, 10);
         ArrayOfA[i].dataRef = (*startIterator);
       }
