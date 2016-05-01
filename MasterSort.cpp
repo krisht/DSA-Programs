@@ -104,7 +104,11 @@ int main() {
 // class defintions here if you wish.
 
 /*
- * CODE FROM HERE WAS MADE BY KRISHNA THIYAGARAJAN
+ * Krishna Thiyagarajan
+ * Prof. Carl Sable
+ * ECE-164: DSA I
+ * MasterSort.cpp
+ * Version 1.5
  */
 
 // QuickSort T1, T2, Radix Sort T3, Insertion Sort T4
