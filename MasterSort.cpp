@@ -105,11 +105,58 @@ int main() {
 
 // QuickSort T1, T2, Radix Sort T3, Insertion Sort T4
 
+/*
+ * Class declarations for each type of data point for T1, T2, T3, & T4
+ */
+
+// T1 & T2 Type Node
+class NodeTypeA{ 
+public:
+  Data* dataRef;
+  unsigned long long post;
+  unsigned long long pre;
+  int least; 
+  int size;
+};
+
+// T3 Type Node
+class NodeTypeB{
+public: 
+  Data* dataRef;
+  float total;
+}; 
+
+// T4 Type Node
+class NodeTypeC{
+public: 
+  Data* dataRef; 
+  unsigned long long post;
+  unsigned long long pre;
+};
 
 //Public Variables Declaration
 list<Data *>::iterator startIterator; 
 list<Data *>::iterator endIterator;
 unsigned long long testArray[10];
+NodeTypeA ArrayOfA[2000000]; 
+NodeTypeB ArrayOfB[2000000];
+NodeTypeC ArrayOfC[2000000];
+
+bool CompareA(const NodeTypeA &first, const NodeTypeA &second){
+  if(first.size != second.size)
+    return first.size < second.size;
+  else return first.post < second.post; 
+}
+
+bool CompareB(const NodeTypeB &first, const NodeTypeB &second){
+  return first.total < second.total;
+}
+
+bool CompareC(const NodeTypeC &first, const NodeTypeC &second){
+  if(first.post != second.post)
+    return first.post < second.post;
+  else return first.pre < second.pre;
+}
 
 void insertionSort(int size){
 
@@ -143,12 +190,15 @@ void sortDataList(list<Data *> &l) {
   }
   else fileType = 1; 
 
-  starIterator = l.begin(); // Resets startIterator
-
+  startIterator = l.begin(); // Resets startIterator
 
   //Arranges 
   if(fileType == 3){
-
+    for(int i = 0; i < listSize; i++, starIterator++){
+      ArrayOfB[i] = NodeTypeB();
+      ArrayOfB[i].dataRef = (*startIterator); 
+      ArrayOfB[i].total = atof((*startIterator)->data.c_str());
+    }
   }
   else if(type != 4){
 
