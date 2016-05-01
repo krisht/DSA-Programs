@@ -128,6 +128,7 @@ class NodeTypeB{
 public: 
   Data* dataRef;
   float total;
+  int intRep;
 }; 
 
 // T4 Type Node
@@ -156,7 +157,7 @@ void copyToOriginal(list<Data *> &l){
       *startIterator = ArrayOfB[i].dataRef;
     else if(fileType !=4)
       *startIterator = ArrayOfA[i].dataRef;
-    else *startiterator = ArrayOfC[i].dataRef;
+    else *startIterator = ArrayOfC[i].dataRef;
     i++;
     startIterator++;
   }
@@ -194,15 +195,31 @@ void insertionSort(int size){
 
 }
 
-void radixSort(int size){
-  
-  int i;
+void radixSort(int size ){
+  int i; 
   int digit; 
-  int count;
-  for(int passNum = 0; passNum < 6; passNum++){
-    
-  }
+  int count; 
+  int countOfDigits[10]= {0,0,0,0,0,0,0,0,0,0};
+  NodeTypeB TempArrayOfB[2000000]; 
 
+  for(int passNum = 0; passNum < 6; passNum++){
+    for(int i = 0; i < size; i++){
+      digit = (ArrayOfB[i].intRep/((int)pow(10, passNum))) % 10;
+      countOfDigits[digit]++; 
+    } 
+
+    for(int i = 1; i < 10; i++)
+      countOfDigits[i] = countOfDigits[i-1] + countOfDigits[i];
+
+    for(int i = size-1; i>=0; i--){
+      digit = (ArrayOfB[i].intRep/((int)pow(10, passNum))) % 10;
+      countOfDigits[digit]--;
+      TempArrayOfB[countOfDigits[digit]] = ArrayOfB[i];
+    }
+
+    copy(TempArrayOfB, TempArrayOfB + 2000000, ArrayOfB );
+
+  }
 }
 
 void sortDataList(list<Data *> &l) {
@@ -237,6 +254,7 @@ void sortDataList(list<Data *> &l) {
       ArrayOfB[i] = NodeTypeB();
       ArrayOfB[i].dataRef = (*startIterator); 
       ArrayOfB[i].total = atof((*startIterator)->data.c_str());
+      ArrayOfB[i].intRep = (int)(atof((*startIterator)->data.c_str())*1000);
     }
   }
   else if(type != 4){
