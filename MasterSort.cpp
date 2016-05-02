@@ -162,7 +162,6 @@ int fileType, listSize;                                           // Public vari
 /*
  * General function to copy manipulated arrays to original list
  */
-
 void copyToOriginal(list<Data *> &l){
   startIterator = l.begin(); 
   endIterator = l.end();
@@ -183,7 +182,6 @@ void copyToOriginal(list<Data *> &l){
  * Comparison function for Type A elements
  * Returns true if first argument is less than second argument
  */
-
 bool CompareA(const NodeTypeA &first, const NodeTypeA &second){
   if(first.sizeOfWhole != second.sizeOfWhole)
     return first.sizeOfWhole < second.sizeOfWhole;
@@ -194,7 +192,6 @@ bool CompareA(const NodeTypeA &first, const NodeTypeA &second){
  * Comparison function for Type C elements
  * Returns true if first argument is less than second argument
  */
-
 bool CompareC(const NodeTypeC &first, const NodeTypeC &second){
   if(first.leftOfDec != second.leftOfDec)
     return first.leftOfDec < second.leftOfDec;
@@ -204,7 +201,6 @@ bool CompareC(const NodeTypeC &first, const NodeTypeC &second){
 /*
  * Insertion sort for T4 type of files
  */
-
 void insertionSort(int size){
   for(int i = 1; i < size; i++){
     int j = i-1; 
@@ -220,7 +216,6 @@ void insertionSort(int size){
 /*
  * Counting sorter for Radix sorting
  */
-
 void countingSort(int size, int digit){
   int countOfDigits[10] = {0};
 
@@ -243,7 +238,6 @@ void countingSort(int size, int digit){
 /*
  * Radix sort for T3 type files
  */
-
 void radixSort(int size){                                       
 
   int digit = 1;
@@ -256,6 +250,10 @@ void radixSort(int size){
   }
 
 }
+
+/*
+ * Sorts given list l intelligently
+ */
 
 void sortDataList(list<Data *> &l) { 
 
