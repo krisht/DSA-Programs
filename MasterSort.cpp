@@ -108,17 +108,20 @@ int main() {
  * Prof. Carl Sable
  * ECE-164: DSA I
  * MasterSort.cpp
- * Version 1.5
+ * Version 3.0
+ * Purpose: Sort a list of randomly generated floats
+ *          in the form of strings eficiently
+ * Apprch : Classify file type into T1, T2, T3 or T4
+ *          as noted in assignment. Extract useful
+ *          data into the below described nodes
+ *          apply QuickSort if T1 or T2, Radix if T3
+ *          and Insertion if T4.  
  */
-
-// QuickSort T1, T2, Radix Sort T3, Insertion Sort T4
 
 /*
- * Class declarations for each type of data point for T1, T2, T3, & T4
+ * TypeA Node Object for T1 & T2 types of data
  */
-
-// T1 & T2 Type Node
-class NodeTypeA{ 
+class NodeTypeA{
 public:
   Data* dataRef;
   unsigned long long post;
@@ -127,7 +130,9 @@ public:
   int size;
 };
 
-// T3 Type Node
+/*
+ * TypeB Node Object for T3 type of data
+ */
 class NodeTypeB{
 public: 
   Data* dataRef;
@@ -135,7 +140,9 @@ public:
   int intRep;
 }; 
 
-// T4 Type Node
+/*
+ * TypeC Node Object for T4 type of data
+ */
 class NodeTypeC{
 public: 
   Data* dataRef; 
@@ -144,13 +151,17 @@ public:
 };
 
 //Public Variables Declaration
-list<Data *>::iterator startIterator; 
+list<Data *>::iterator startIterator;                             //Start & End Iterator for copying and transferring arrays
 list<Data *>::iterator endIterator;
-NodeTypeA ArrayOfA[2000000]; 
+NodeTypeA ArrayOfA[2000000];                                      //Arrays for manipulating and sorting
 NodeTypeB ArrayOfB[2000000];
 NodeTypeC ArrayOfC[2000000];
-NodeTypeB TempArrayOfB[2000000];
-int fileType, listSize;
+NodeTypeB TempArrayOfB[2000000];                                  // Temporary Array for Radix Sort
+int fileType, listSize;                                           // Public variables for easy usage (this was allowed in assignment)
+
+/*
+ * General function to copy manipulated arrays to original list
+ */
 
 void copyToOriginal(list<Data *> &l){
   startIterator = l.begin(); 
@@ -168,21 +179,31 @@ void copyToOriginal(list<Data *> &l){
   }
 }
 
+/*
+ * Comparison function for Type A elements
+ * Returns true if first argument is less than second argument
+ */
+
 bool CompareA(const NodeTypeA &first, const NodeTypeA &second){
   if(first.size != second.size)
     return first.size < second.size;
   else return first.post < second.post; 
 }
 
-bool CompareB(const NodeTypeB &first, const NodeTypeB &second){
-  return first.total < second.total;
-}
+/*
+ * Comparison function for Type C elements
+ * Returns true if first argument is less than second argument
+ */
 
 bool CompareC(const NodeTypeC &first, const NodeTypeC &second){
   if(first.post != second.post)
     return first.post < second.post;
   else return first.pre < second.pre; 
 }
+
+/*
+ * Insertion sort for T4 type of files
+ */
 
 void insertionSort(int size){
   for(int i = 1; i < size; i++){
@@ -195,6 +216,10 @@ void insertionSort(int size){
     ArrayOfC[j+1] = temp;
   }
 }
+
+/*
+ * Counting sorter for Radix sorting
+ */
 
 void countingSort(int size, int digit){
   int countOfDigits[10] = {0};
@@ -215,7 +240,11 @@ void countingSort(int size, int digit){
 
 }
 
-void radixSort(int size){
+/*
+ * Radix sort for T3 type files
+ */
+
+void radixSort(int size){                                       
 
   int digit = 1;
   int passNum = 1;
@@ -228,14 +257,16 @@ void radixSort(int size){
 
 }
 
-void sortDataList(list<Data *> &l) {
-  // Fill in this function
-  startIterator = l.begin();
-  endIterator = l.end();
-  endIterator--;
-  listSize = l.size();
+void sortDataList(list<Data *> &l) { 
 
-  //Code below finds the type of file that is being handled & sorted
+  startIterator = l.begin();                                                // Initiates starting point and ending point with iterators
+  endIterator = l.end(); 
+  endIterator--;
+  listSize = l.size();                                                      // Finds list size 
+
+  /*
+   * Finds the type of file that is being handled & sorted
+   */
 
   if(listSize > 500000){
     if((*startIterator)->data.size()/sizeof(char) <= 7)
@@ -252,9 +283,11 @@ void sortDataList(list<Data *> &l) {
   }
   else fileType = 1; 
 
-  startIterator = l.begin(); // Resets startIterator
+  startIterator = l.begin();                                                // Resets startIterator
 
-  //Arranges Strings into Sortable Array
+  /*
+   *Arranges strings into sortable array and extracts necessary information
+   */
   if(fileType == 3){
     for(int i = 0; i < listSize; i++, startIterator++){
       ArrayOfB[i] = NodeTypeB();
@@ -293,18 +326,17 @@ void sortDataList(list<Data *> &l) {
 
   }
 
-  //Switch statement that sorts the list
+  /*
+   * Switch statement that sorts list based on type of list
+   */
   switch(fileType){
-    case 1:
-       //QuickSort
-      sort(ArrayOfA, ArrayOfA + listSize, CompareA);
-      break;  
+    case 1:                       
     case 2: 
       //QuickSort
       sort(ArrayOfA, ArrayOfA + listSize, CompareA);
       break; 
     case 3:
-      sort(ArrayOfB, ArrayOfB + listSize, CompareB);
+      radixSort(listSize); 
       break; 
     case 4: 
       insertionSort(listSize);
@@ -313,5 +345,4 @@ void sortDataList(list<Data *> &l) {
 
   copyToOriginal(l);
 
-  cout << "Sorting complete!" << endl;
 }
