@@ -199,12 +199,12 @@ void insertionSort(int size){
 
 }
 
-void radixSort(int size ){
+void radixSort(int size){
   int i; 
   int digit; 
   int count; 
   int countOfDigits[10]= {0,0,0,0,0,0,0,0,0,0};
-  NodeTypeB TempArrayOfB[2000000]; 
+  NodeTypeB TempArrayOfB[sizeof(ArrayOfB)/sizeof(ArrayOfB[0])]; 
 
   for(int passNum = 0; passNum < 6; passNum++){
     for(int i = 0; i < size; i++){
@@ -232,6 +232,7 @@ void sortDataList(list<Data *> &l) {
   endIterator = l.end();
   endIterator--;
   int listSize = l.size();
+  cout << listSize << endl;
 
   //Code below finds the type of file that is being handled & sorted
 
@@ -240,9 +241,9 @@ void sortDataList(list<Data *> &l) {
       fileType = 3;
     else{
       unsigned long long testA, testB; 
-      testA = strtoull((startIterator*)->data.substr(0,8).c_str(),0,10);
+      testA = strtoull((*startIterator)->data.substr(0,8).c_str(), 0, 10); 
       startIterator++;
-      testB= strtoull((startIterator*)->data.substr(0,8).c_str(),0,10);
+      testB= strtoull((*startIterator)->data.substr(0,8).c_str(),0,10);
       if(testA == testB)
         fileType = 4;
       else fileType = 2;
@@ -261,7 +262,7 @@ void sortDataList(list<Data *> &l) {
       ArrayOfB[i].intRep = (int)(ArrayOfB[i].total * 1000); 
     }
   }
-  else if(type != 4){
+  else if(fileType != 4){
     int posOfDecimal; 
     int strLength;
     for(int i = 0; i < listSize; i++, startIterator++){
@@ -270,7 +271,7 @@ void sortDataList(list<Data *> &l) {
       if(posOfDecimal == 20){
         ArrayOfA[i].size = 20;
         ArrayOfA[i].post = strtoull((*startIterator)->data.substr(0,19).c_str(),0,10);
-        ArrayOfA[i].dataRef = (*startIterator)
+        ArrayOfA[i].dataRef = (*startIterator);
       }
       else{
         ArrayOfA[i].size = posOfDecimal;
@@ -306,7 +307,7 @@ void sortDataList(list<Data *> &l) {
       break;
   };
 
-  copyToOriginal();
+  copyToOriginal(l);
 
   cout << "Sorting complete!" << endl;
 }
