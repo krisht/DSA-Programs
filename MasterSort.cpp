@@ -150,7 +150,7 @@ NodeTypeA ArrayOfA[2000000];
 NodeTypeB ArrayOfB[2000000];
 NodeTypeC ArrayOfC[2000000];
 NodeTypeB TempArrayOfB[2000000];
-int fileType; 
+int fileType, listSize;
 
 void copyToOriginal(list<Data *> &l){
   startIterator = l.begin(); 
@@ -199,28 +199,57 @@ void insertionSort(int size){
   }
 }
 
-void radixSort(int size){
-  int digit; 
-  int countOfDigits[10] = {0,0,0,0,0,0,0,0,0,0};
+void countingSort(int size, int digit){
+  int countOfDigits[10] = {0};
 
-  for(int passNum = 0; passNum < 6; passNum++){
+  for(int i = 0; i < size; i++)
+    countOfDigits[(ArrayOfB[i].intRep/digit) % 10]++;
+
+  for(int i = 1; i< 10; i++)
+    countOfDigits[i]+=countOfDigits[i-1];
+
+  for(int i = size -1; i >= 0; i--){
+    TempArrayOfB[countOfDigits[(ArrayOfB[i].intRep/digit) % 10] - 1] = ArrayOfB[i];
+    countOfDigits[(ArrayOfB[i].intRep/digit) % 10]--;
+  }
+
+  for(int i = 0; i < size; i++)
+    ArrayOfB[i] = TempArrayOfB[i];
+
+}
+
+void radixSort(int size){
+
+  int max = 999999;
+
+  int digit = 1;
+  int passNum = 1;
+
+  while(max/digit > 0){
+    countingSort(size, digit);
+    passNum++;
+    digit*=10;
+  }
+
+  /*for(int passNum =0; passNum< 6; passNum++){
+    int countOfDigits[10] ={0};
     for(int i = 0; i < size; i++){
-      digit = (ArrayOfB[i].intRep/((int)pow(10, passNum))) % 10;
+      int digit = (ArrayOfB[i].intRep/((int)pow(10,passNum))) % 10;
       countOfDigits[digit]++;
     }
 
-    for(int i = 1; i<10; i++)
-      countOfDigits[i] = countOfDigits[i-1] + countOfDigits[i];
+    for(int i = 1; i < 10; i++)
+      countOfDigits[i]+=countOfDigits[i-1];
 
-    for(int i = 0; i < size; i++){
-      digit =(ArrayOfB[i].intRep/((int)pow(10,passNum))) % 10;
-      countOfDigits[digit] =  countOfDigits[digit] - 1;
-      TempArrayOfB[countOfDigits[digit]] = ArrayOfB[i];
+    for(int i = size-1; i>=0; i--){
+      int digit =(ArrayOfB[i].intRep/((int)pow(10,passNum))) % 10;
+      countOfDigits[digit]--;
+      int pos =  countOfDigits[digit];
+      TempArrayOfB[pos] = ArrayOfB[i];
     }
 
     copy(TempArrayOfB, TempArrayOfB + 2000000, ArrayOfB);
- 
-  }
+  }*/
 
 }
 
@@ -229,7 +258,7 @@ void sortDataList(list<Data *> &l) {
   startIterator = l.begin();
   endIterator = l.end();
   endIterator--;
-  int listSize = l.size();
+  listSize = l.size();
 
   //Code below finds the type of file that is being handled & sorted
 
@@ -294,13 +323,13 @@ void sortDataList(list<Data *> &l) {
     case 1:
        //QuickSort
       sort(ArrayOfA, ArrayOfA + listSize, CompareA);
-      break;
+      break;  
     case 2: 
       //QuickSort
       sort(ArrayOfA, ArrayOfA + listSize, CompareA);
       break; 
     case 3:
-      radixSort(listSize);
+      sort(ArrayOfB, ArrayOfB + listSize, CompareB);
       break; 
     case 4: 
       insertionSort(listSize);
