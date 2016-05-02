@@ -124,10 +124,10 @@ int main() {
 class NodeTypeA{
 public:
   Data* dataRef;
-  unsigned long long post;
-  unsigned long long pre;
+  unsigned long long leftOfDec;
+  unsigned long long rightOfDec;
   int least; 
-  int size;
+  int sizeOfWhole;
 };
 
 /*
@@ -136,7 +136,7 @@ public:
 class NodeTypeB{
 public: 
   Data* dataRef;
-  float total;
+  float floatValue;
   int intRep;
 }; 
 
@@ -146,8 +146,8 @@ public:
 class NodeTypeC{
 public: 
   Data* dataRef; 
-  unsigned long long post;
-  unsigned long long pre;
+  unsigned long long leftOfDec;
+  unsigned long long rightOfDec;
 };
 
 //Public Variables Declaration
@@ -185,9 +185,9 @@ void copyToOriginal(list<Data *> &l){
  */
 
 bool CompareA(const NodeTypeA &first, const NodeTypeA &second){
-  if(first.size != second.size)
-    return first.size < second.size;
-  else return first.post < second.post; 
+  if(first.sizeOfWhole != second.sizeOfWhole)
+    return first.sizeOfWhole < second.sizeOfWhole;
+  else return first.leftOfDec < second.leftOfDec; 
 }
 
 /*
@@ -196,9 +196,9 @@ bool CompareA(const NodeTypeA &first, const NodeTypeA &second){
  */
 
 bool CompareC(const NodeTypeC &first, const NodeTypeC &second){
-  if(first.post != second.post)
-    return first.post < second.post;
-  else return first.pre < second.pre; 
+  if(first.leftOfDec != second.leftOfDec)
+    return first.leftOfDec < second.leftOfDec;
+  else return first.rightOfDec < second.rightOfDec; 
 }
 
 /*
@@ -292,8 +292,8 @@ void sortDataList(list<Data *> &l) {
     for(int i = 0; i < listSize; i++, startIterator++){
       ArrayOfB[i] = NodeTypeB();
       ArrayOfB[i].dataRef = (*startIterator); 
-      ArrayOfB[i].total = atof((*startIterator)->data.c_str());
-      ArrayOfB[i].intRep = (int)(ArrayOfB[i].total * 1000); 
+      ArrayOfB[i].floatValue = atof((*startIterator)->data.c_str());
+      ArrayOfB[i].intRep = (int)(ArrayOfB[i].floatValue * 1000); 
     }
   }
   else if(fileType != 4){
@@ -303,13 +303,13 @@ void sortDataList(list<Data *> &l) {
       ArrayOfA[i] = NodeTypeA();
       posOfDecimal = (*startIterator)->data.find('.');
       if(posOfDecimal == 20){
-        ArrayOfA[i].size = 20;
-        ArrayOfA[i].post = strtoull((*startIterator)->data.substr(0,19).c_str(),0,10);
+        ArrayOfA[i].sizeOfWhole = 20;
+        ArrayOfA[i].leftOfDec = strtoull((*startIterator)->data.substr(0,19).c_str(),0,10);
         ArrayOfA[i].dataRef = (*startIterator);
       }
       else{
-        ArrayOfA[i].size = posOfDecimal;
-        ArrayOfA[i].post = strtoull((*startIterator)->data.substr(0,posOfDecimal).c_str(), 0, 10);
+        ArrayOfA[i].sizeOfWhole = posOfDecimal;
+        ArrayOfA[i].leftOfDec = strtoull((*startIterator)->data.substr(0,posOfDecimal).c_str(), 0, 10);
         ArrayOfA[i].dataRef = (*startIterator);
       }
     }
@@ -319,8 +319,8 @@ void sortDataList(list<Data *> &l) {
     for(int i = 0; i < listSize; i++, startIterator++){
       ArrayOfC[i] = NodeTypeC();
       posOfDecimal = (*startIterator)->data.find('.');
-      ArrayOfC[i].post = strtoull((*startIterator)->data.substr(posOfDecimal-16,17).c_str(), 0, 10);
-      ArrayOfC[i].pre = strtoull((*startIterator)->data.substr(posOfDecimal+1, 15).c_str(), 0, 10); 
+      ArrayOfC[i].leftOfDec = strtoull((*startIterator)->data.substr(posOfDecimal-16,17).c_str(), 0, 10);
+      ArrayOfC[i].rightOfDec = strtoull((*startIterator)->data.substr(posOfDecimal+1, 15).c_str(), 0, 10); 
       ArrayOfC[i].dataRef = (*startIterator);
     }
 
@@ -330,10 +330,10 @@ void sortDataList(list<Data *> &l) {
    * Switch statement that sorts list based on type of list
    */
   switch(fileType){
-    case 1:                       
+    case 1:                 
     case 2: 
       //QuickSort
-      sort(ArrayOfA, ArrayOfA + listSize, CompareA);
+      sort(ArrayOfA, ArrayOfA + listSize, CompareA );
       break; 
     case 3:
       radixSort(listSize); 
