@@ -185,17 +185,14 @@ bool CompareC(const NodeTypeC &first, const NodeTypeC &second){
 }
 
 void insertionSort(int size){
-
   for(int i = 1; i < size; i++){
-    int j= i -1;
+    int j = i-1; 
     NodeTypeC temp = ArrayOfC[i];
-
-    while(j >= 0 && CompareC(temp, ArrayOfC[j])){
+    while(j>=0 && CompareC(temp, ArrayOfC[j])){
       ArrayOfC[j+1] = ArrayOfC[j];
-      j--;
+      j--; 
     }
     ArrayOfC[j+1] = temp;
-    //Not sure if this works
   }
 }
 
@@ -220,36 +217,14 @@ void countingSort(int size, int digit){
 
 void radixSort(int size){
 
-  int max = 999999;
-
   int digit = 1;
   int passNum = 1;
 
-  while(max/digit > 0){
+  while(999999/digit > 0){
     countingSort(size, digit);
     passNum++;
     digit*=10;
   }
-
-  /*for(int passNum =0; passNum< 6; passNum++){
-    int countOfDigits[10] ={0};
-    for(int i = 0; i < size; i++){
-      int digit = (ArrayOfB[i].intRep/((int)pow(10,passNum))) % 10;
-      countOfDigits[digit]++;
-    }
-
-    for(int i = 1; i < 10; i++)
-      countOfDigits[i]+=countOfDigits[i-1];
-
-    for(int i = size-1; i>=0; i--){
-      int digit =(ArrayOfB[i].intRep/((int)pow(10,passNum))) % 10;
-      countOfDigits[digit]--;
-      int pos =  countOfDigits[digit];
-      TempArrayOfB[pos] = ArrayOfB[i];
-    }
-
-    copy(TempArrayOfB, TempArrayOfB + 2000000, ArrayOfB);
-  }*/
 
 }
 
