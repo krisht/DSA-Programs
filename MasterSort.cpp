@@ -149,11 +149,12 @@ list<Data *>::iterator endIterator;
 NodeTypeA ArrayOfA[2000000]; 
 NodeTypeB ArrayOfB[2000000];
 NodeTypeC ArrayOfC[2000000];
+NodeTypeB TempArrayOfB[2000000];
 int fileType; 
 
 void copyToOriginal(list<Data *> &l){
   startIterator = l.begin(); 
-  endIterator = l.end(); 
+  endIterator = l.end();
   int i = 0; 
 
   while(startIterator != endIterator){
@@ -196,34 +197,31 @@ void insertionSort(int size){
     ArrayOfC[j+1] = temp;
     //Not sure if this works
   }
-
 }
 
 void radixSort(int size){
-  int i; 
   int digit; 
-  int count; 
-  int countOfDigits[10]= {0,0,0,0,0,0,0,0,0,0};
-  NodeTypeB TempArrayOfB[sizeof(ArrayOfB)/sizeof(ArrayOfB[0])]; 
+  int countOfDigits[10] = {0,0,0,0,0,0,0,0,0,0};
 
   for(int passNum = 0; passNum < 6; passNum++){
     for(int i = 0; i < size; i++){
       digit = (ArrayOfB[i].intRep/((int)pow(10, passNum))) % 10;
-      countOfDigits[digit]++; 
-    } 
+      countOfDigits[digit]++;
+    }
 
-    for(int i = 1; i < 10; i++)
+    for(int i = 1; i<10; i++)
       countOfDigits[i] = countOfDigits[i-1] + countOfDigits[i];
 
-    for(int i = size-1; i>=0; i--){
-      digit = (ArrayOfB[i].intRep/((int)pow(10, passNum))) % 10;
-      countOfDigits[digit]--;
+    for(int i = 0; i < size; i++){
+      digit =(ArrayOfB[i].intRep/((int)pow(10,passNum))) % 10;
+      countOfDigits[digit] =  countOfDigits[digit] - 1;
       TempArrayOfB[countOfDigits[digit]] = ArrayOfB[i];
     }
 
-    copy(TempArrayOfB, TempArrayOfB + 2000000, ArrayOfB );
-
+    copy(TempArrayOfB, TempArrayOfB + 2000000, ArrayOfB);
+ 
   }
+
 }
 
 void sortDataList(list<Data *> &l) {
@@ -232,7 +230,6 @@ void sortDataList(list<Data *> &l) {
   endIterator = l.end();
   endIterator--;
   int listSize = l.size();
-  cout << listSize << endl;
 
   //Code below finds the type of file that is being handled & sorted
 
@@ -295,11 +292,14 @@ void sortDataList(list<Data *> &l) {
   //Switch statement that sorts the list
   switch(fileType){
     case 1:
+       //QuickSort
+      sort(ArrayOfA, ArrayOfA + listSize, CompareA);
+      break;
     case 2: 
       //QuickSort
       sort(ArrayOfA, ArrayOfA + listSize, CompareA);
       break; 
-    case 3: 
+    case 3:
       radixSort(listSize);
       break; 
     case 4: 
