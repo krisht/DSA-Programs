@@ -188,6 +188,10 @@ bool CompareA(const NodeTypeA &first, const NodeTypeA &second){
   else return first.leftOfDec < second.leftOfDec; 
 }
 
+bool CompareB(const NodeTypeB &first, const NodeTypeB &second){
+  return first.floatValue < second.floatValue;
+}
+
 /*
  * Comparison function for Type C elements
  * Returns true if first argument is less than second argument
@@ -201,7 +205,7 @@ bool CompareC(const NodeTypeC &first, const NodeTypeC &second){
 /*
  * Insertion sort for T4 type of files
  */
-void insertionSort(int size){
+void insertionSortC(int size){
   for(int i = 1; i < size; i++){
     int j = i-1; 
     NodeTypeC temp = ArrayOfC[i];
@@ -210,6 +214,18 @@ void insertionSort(int size){
       j--; 
     }
     ArrayOfC[j+1] = temp;
+  }
+}
+
+void insertionSortB(int size){
+  for(int i = 1; i < size; i++){
+    int j = i-1; 
+    NodeTypeB temp = ArrayOfB[i];
+    while(j>=0 && CompareB(temp, ArrayOfB[j])){
+      ArrayOfB[j+1] = ArrayOfB[j];
+      j--; 
+    }
+    ArrayOfB[j+1] = temp;
   }
 }
 
@@ -254,7 +270,6 @@ void radixSort(int size){
 /*
  * Sorts given list l intelligently
  */
-
 void sortDataList(list<Data *> &l) { 
 
   startIterator = l.begin();                                                // Initiates starting point and ending point with iterators
@@ -331,16 +346,16 @@ void sortDataList(list<Data *> &l) {
     case 1:                 
     case 2: 
       //QuickSort
-      sort(ArrayOfA, ArrayOfA + listSize, CompareA );
+      stable_sort(ArrayOfA, ArrayOfA + listSize, CompareA );
       break; 
     case 3:
-      radixSort(listSize); 
+      sort(ArrayOfB, ArrayOfB + listSize, CompareB); 
       break; 
     case 4: 
-      insertionSort(listSize);
+      insertionSortC(listSize);
       break;
   };
 
   copyToOriginal(l);
 
-}
+}   
