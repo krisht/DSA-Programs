@@ -131,7 +131,7 @@ template<typename T>
 bool BinarySearchTree<T>::insert(T data){
 	BSTNode<T>* newNode; 
 	newNode = new BSTNode<T>(data);
-	return insert(newNode); 
+	return this->insert(newNode); 
 }
 
 template<typename T>
