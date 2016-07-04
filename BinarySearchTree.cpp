@@ -9,12 +9,12 @@ void Node<T>::setData(T data){
 }
 
 template<class T>
-void Node<T>::setRight(Node* node){
+void Node<T>::setRight(Node<T>* node){
 	this->right = node; 
 }
 
 template<class T>
-void Node<T>::setLeft(Node* node){
+void Node<T>::setLeft(Node<T>* node){
 	this->left = node; 
 }
 
@@ -38,23 +38,31 @@ Node<T>* Node<T>::getRight(){
  */
 template<class T>
 BinarySearchTree<T>::BinarySearchTree(){
-	root = NULL; 
-	return; 
+	root = NULL;
 }
 
 template<class T>
 BinarySearchTree<T>::~BinarySearchTree(){
-	clearTree(root); 
-	return; 
+	clearTree(root);
+}
+
+template<class T>
+Node<T>* BinarySearchTree<T>::getRoot(){
+	return this->root; 
+}
+
+template<class T>
+void BinarySearchTree<T>::setRoot(Node<T>* newRoot){
+	this->root = newRoot; 
 }
 
 template<class T>
 void BinarySearchTree<T>::clearTree(Node<T>* t){
 	if(t == NULL)
 		return; 
-	if(t->left !=NULL)
+	if(t->left != NULL)
 		clearTree(t->left); 
-	if(t->right !=NULL)
+	if(t->right != NULL)
 		clearTree(t->right); 
 	delete t; 
 	return; 
@@ -79,8 +87,8 @@ template<class T>
 Node<T>* BinarySearchTree<T>::searchTree(T data){
 	Node<T>* temp; 
 	temp = this->root; 
-	while((temp!=NULL) &&  (temp->getData() != data))
-		if(data < temp->getData())
+	while((temp != NULL) &&  (temp->getData() != data))
+		if(data <= temp->getData())
 			temp = temp->getLeft(); 
 		else temp = temp->getRight();
 
@@ -92,24 +100,25 @@ Node<T>* BinarySearchTree<T>::searchTree(T data){
 template<class T>
 bool BinarySearchTree<T>::insert(Node<T>* newNode){
 	Node<T>* temp; 
-	Node<T>* back; 
+	Node<T>* prev; 
 	temp = root; 
-	back = NULL; 
+	prev = NULL; 
 
 	while(temp != NULL){
-		back = temp;
-		if(newNode->getData() < temp->getData())
+		prev = temp;
+		if(newNode->getData() <= temp->getData())
 			temp = temp->getLeft(); 
 		else temp = temp->getRight(); 
 	}
 
-	if(back == NULL)
+	if(prev == NULL)
 		root = newNode; 
 	else
-{		if(newNode->getData() < back->getData())
-			back->setLeft(newNode); 
-		else back->setRight(newNode); 
+{		if(newNode->getData() <= prev->getData())
+			prev->setLeft(newNode); 
+		else prev->setRight(newNode); 
 	}
+	this->numNodes++; 
 	return true; 
 }
 
@@ -125,20 +134,124 @@ bool BinarySearchTree<T>::insert(T data){
 
 template<class T>
 bool BinarySearchTree<T>::deleteNode(T data){
-	
+	Node<T>* prev; 
+	Node<T>* temp; 
+	Node<T>* delParent; 
+	Node<T>* delNode;
+
+	temp = this->getRoot(); 
+	prev = NULL; 
+
+	while((temp != NULL) && (data != temp->getData())){
+		prev = temp; 
+		if(data <= temp->getData())
+			temp = temp->getLeft(); 
+		else temp = temp->getRight(); 
+	} 
+
+	if(temp == NULL){
+		return false; 
+	}
+	else{
+		if(temp == this->getRoot()){
+			delNode = this->getRoot(); 
+			delParent = NULL; 
+		}
+		else{
+			delNode = temp; 
+			delParent = prev; 
+		}
+	}
+
+	if(delNode->getRight() == NULL){
+		if(delParent == NULL){
+			this->setRoot(delNode->getLeft());
+			delete delNode; 
+			this->numNodes--; 
+			return true; 
+		}
+		else{
+			if(delParent->getLeft() == delNode)
+				delParent->setLeft(delNode->getLeft());
+			else delParent->setRight(delNode->getLeft());
+			delete delNode; 
+			this->numNodes--; 
+			return true; 
+		}
+	}
+	else{
+		if(delNode->getLeft() == NULL){
+			if(delParent == NULL){
+				this->setRoot(delNode->getRight()); 
+				delete delNode; 
+				this->numNodes--; 
+				return true; 
+			}
+			else{
+				if(delParent->getLeft() == delNode)
+					delParent->setLeft(delNode->getRight());
+				else delParent->setRight(delNode->getRight());
+				delete delNode;
+				this->numNodes--; 
+				return true; 
+			}
+		}
+		else{
+			temp = delNode->getLeft(); 
+			prev = delNode; 
+			while(temp->getRight() != NULL){
+				prev = temp; 
+				temp = temp->getRight();
+			}
+			delNode->setData(temp->getData());
+
+			if(prev == delNode)
+				prev->setLeft(temp->getLeft());
+			else prev->setRight(temp->getRight());
+			delete temp;
+			this->numNodes--; 
+			return true; 
+		}
+	}
 }
 
 template<class T>
 Node<T>* BinarySearchTree<T>::findMin(){
 	Node<T>* current = this;
-	while(current->getLeft() !=NULL)
+	while(current->getLeft() != NULL)
 		current = current->getLeft(); 
 	return current; 
 }
 
 template<class T>
-Node<T>* BinarySearchTree<T>::getRoot(){
-	return this->root; 
+Node<T>* BinarySearchTree<T>::findMax(){
+	Node<T>* current = this; 
+	while(current->getRight() != NULL)
+		current = current->getRight();
+	return current; 
 }
 
 template<class T>
+int BinarySearchTree<T>::getNumNodes(){
+	return this->numNodes; 
+}
+
+template<class T>
+void BinarySearchTree<T>::printOne(Node<T>* node){
+	cout << node << endl;
+}
+
+template<class T>
+void BinarySearchTree<T>::printAll(Node<T>* node){
+	if(node != NULL){
+		printAll(node->getLeft());
+		printOne(node); 
+		printAll(node->getRight()); 
+	}
+}
+
+template<class T>
+void BinarySearchTree<T>::printTree(){
+	cout << this << endl; 
+	printAll(this->getRoot()); 
+}
