@@ -7,19 +7,18 @@
 using namespace std; 
 
 int main(){
-	BinarySearchTree<int>* theTree; 
-	Node<int>* newNode; 
+	BinarySearchTree<float>* theTree; 
+	Node<float>* newNode; 
 
-	theTree = new BinarySearchTree<int>(); 
+	theTree = new BinarySearchTree<float>(); 
 
 	srand((unsigned)time(0)); 
-	for(int i = 0; i < 100; i++){
-    	int randNum = (rand()%10000)+1;
-    	theTree->insert(new Node<int>(randNum));
-	}
+	for(int i = 0; i < 1000; i++){
+    	float randNum = static_cast <float> (rand()) / static_cast <float> (RAND_MAX) ; 
+    	theTree->insert(new Node<float>(randNum));
+	}	
 
-
-	theTree->printTree(); 
+	theTree->printTree();  
 
     return 0;
 

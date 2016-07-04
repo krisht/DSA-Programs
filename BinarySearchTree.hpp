@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std; 
 
-template<class T>
+template<typename T>
 class Node{
 private:
 	T data;
@@ -20,7 +20,7 @@ public:
 	Node<T>* getRight(); 
 }; 
 
-template<class T>
+template<typename T>
 class BinarySearchTree{
 private: 
 	Node<T>* root;
@@ -45,5 +45,7 @@ public:
 	void printTree(); 
 
 }; 
+
+#include "BinarySearchTree.tpp"
 
 #endif
