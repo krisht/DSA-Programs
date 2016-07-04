@@ -11,18 +11,13 @@ private:
 	Node<T>* left; 
 	Node<T>* right;
 public:
-	Node();
-	~Node(); 
+	Node(T data); 
 	void setData(T data);
 	void setRight(Node<T>* node); 
-	void setLeft(Node<T>* nodintere); 
+	void setLeft(Node<T>* node); 
 	T getData(); 
 	Node<T>* getLeft(); 
-	Node<T>* getRight();
-	friend ostream& operator << (ostream& strm, const Node<T>& a){
-		strm << "Node(Left: "<< a->getLeft() << ", Data: "<< a->getData() << ", Right: " << a->getRight() << ")"; 
-		return strm; 
-	}; 
+	Node<T>* getRight(); 
 }; 
 
 template<class T>
@@ -48,10 +43,7 @@ public:
 	int getNumNodes(); 
 	void printOne(Node<T>* t); 
 	void printTree(); 
-	friend ostream& operator << (ostream& strm, const BinarySearchTree<T>& a){
-		strm << "BST(Root: "<< a->getRoot()  << ")"; 
-		return strm; 
-	}; 
+
 }; 
 
 #endif
