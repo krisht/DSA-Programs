@@ -1,23 +1,25 @@
 #include <cstdlib> 
 #include <ctime> 
 #include <iostream>
-#include "BinarySearchTree.hpp"
+#include "LinkedList.hpp"
 
 using namespace std; 
 
 int main(){
-	BinarySearchTree<float>* theTree;
+	List<int>* list;
 
-	theTree = new BinarySearchTree<float>(); 
+	list = new List<int>();
+	srand (time(NULL));
 
-	srand((unsigned)time(0)); 
-	for(int i = 0; i < 1000; i++){
-    	float randNum = static_cast <float> (rand()) / static_cast <float> (RAND_MAX) ; 
-    	theTree->insert(new BSTNode<float>(randNum));
-	}
+	for(int i = 0; i < 100; i++)
+		list->insert(rand() % 1000 + 1); 
 
-	cout << theTree << endl; 
+	list->printList(); 
 
+	cout << list->deleteNode((list->get(5))->getData())<< endl; 
+	cout << list->deleteNode((list->get(5))->getData()) << endl; 
+
+	list->printList(); 
     return 0;
 
 }
