@@ -6,9 +6,9 @@
 using namespace std; 
 
 int main(){
-	List<int>* list;
+	SList<int>* list;
 
-	list = new List<int>();
+	list = new SList<int>();
 	srand (time(NULL));
 
 	for(int i = 0; i < 100; i++)
@@ -16,10 +16,6 @@ int main(){
 
 	list->printList(); 
 
-	cout << list->deleteNode((list->get(5))->getData())<< endl; 
-	cout << list->deleteNode((list->get(5))->getData()) << endl; 
-
-	list->printList(); 
     return 0;
 
 }
