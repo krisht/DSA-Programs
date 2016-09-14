@@ -12,7 +12,7 @@ SpellingNazi::~SpellingNazi() {
 }
 
 void SpellingNazi::loadWords() {
-    cout << "Enter dictionary: ";
+    cout << "Dict. Name: ";
     string dictFName;
     cin >> dictFName;
     ifstream dictStream(dictFName.c_str());
