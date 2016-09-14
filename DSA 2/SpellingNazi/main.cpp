@@ -7,4 +7,4 @@ int main() {
     spellchecker -> checkFile();
     delete(spellchecker);
     return 0;
-}
+}   

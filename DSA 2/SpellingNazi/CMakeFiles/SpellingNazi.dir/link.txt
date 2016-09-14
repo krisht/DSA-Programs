@@ -1,1 +1,0 @@
-/usr/bin/c++    -std=c++11   CMakeFiles/SpellingNazi.dir/main.cpp.o CMakeFiles/SpellingNazi.dir/SpellingNazi.cpp.o CMakeFiles/SpellingNazi.dir/HashTable.cpp.o  -o SpellingNazi -rdynamic 
