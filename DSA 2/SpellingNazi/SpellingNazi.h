@@ -1,7 +1,3 @@
-//
-// Created by krishna on 9/13/16.
-//
-
 #ifndef SPELLINGNAZI_SPELLINGNAZI_H
 #define SPELLINGNAZI_SPELLINGNAZI_H
 
@@ -22,6 +18,5 @@ private:
     void toLower(string &str);
 
 };
-
 
 #endif //SPELLINGNAZI_SPELLINGNAZI_H

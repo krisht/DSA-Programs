@@ -1,0 +1,1 @@
+/home/krishna/DSA-Programs/DSA 2/SpellingNazi/CMakeFiles/SpellingNazi.dir

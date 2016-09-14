@@ -1,7 +1,3 @@
-//
-// Created by krishna on 9/13/16.
-//
-
 #include "SpellingNazi.h"
 #define initSize 50000
 
@@ -27,11 +23,12 @@ void SpellingNazi::loadWords() {
     }
 
     string input;
-    do {
-        dictStream >> input;
+    dictStream >> input;
+    while(!dictStream.eof()){
         toLower(input);
         dict->insert(input);
-    } while (!dictStream.eof());
+        dictStream >> input;
+    }
 
     dictStream.close();
 }
@@ -55,8 +52,8 @@ void SpellingNazi::checkFile() {
     ofstream outStream;
 
     outStream.open(outputFName);
-    string line;
 
+    string line;
     do {
         getline(inStream, line);
         process(line, outStream);
@@ -64,36 +61,35 @@ void SpellingNazi::checkFile() {
 
     inStream.close();
     outStream.close();
-
 }
 
 void SpellingNazi::process(string &line, ofstream &writer) {
-    static int lineNumber = 0;
-    ++lineNumber;
+    static int lineNum = 0;
+    lineNum++;
     toLower(line);
     int start;
     string word;
     start = splitPos(line, 0);
-    bool hasNum = (isdigit(line[start]));
-    for (int kk = start; kk < line.size(); kk++) {
-        if (start < 0)
+    bool containsNumber = (line[start]<=57 && line[start]>=48);
+    for (int kk = start; kk <= line.size(); ++kk){
+        if (start == -1)
             break;
-        hasNum = hasNum || isdigit(line[kk]);
-        if (!(isalpha(line[kk]) || !isdigit(line[kk]) || line[kk] == 45 || line[kk] == 92 || line[kk] == 39)) {
-            word = line.substr(start, kk - start);
+        containsNumber = containsNumber || (line[kk]<=57 && line[kk]>=48); //if any character is a number
+        if (!(isalpha(line[kk]) || isdigit(line[kk]) || line[kk] == 45 || line[kk] == 92 || line[kk] == 39)){
+            word = line.substr(start, kk-start);
             if (word.size() > 20)
-                writer << "Long word at line " << lineNumber << ", starts: " << word.substr(0, 20) << endl;
-            else if (!hasNum && !dict->contains(word))
-                writer << "Unknown word at line " << lineNumber << ": " << word << endl;
+                writer << "Long word at line " << lineNum << ", starts: " << word.substr(0,20) << endl;
+            else if (!containsNumber && !dict->contains(word))
+                writer << "Unknown word at line " << lineNum << ": " << word << endl;
             kk = start = splitPos(line, kk);
-            hasNum = isdigit(line[start]);
+            containsNumber = (line[start]<=57 && line[start]>=48); //if start of word is number
         }
     }
 }
 
 int SpellingNazi::splitPos(string &line, int init) {
     for (int kk = init; kk < line.size(); kk++)
-        if (isalpha(line[kk]) || !isdigit(line[kk]) || line[kk] == 45 || line[kk] == 92 || line[kk] == 39)
+        if (isalpha(line[kk]) || isdigit(line[kk]) || line[kk] == 45 || line[kk] == 92 || line[kk] == 39)
             return kk;
     return -1;
 }
