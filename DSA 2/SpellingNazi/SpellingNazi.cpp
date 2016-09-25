@@ -1,34 +1,32 @@
 #include "SpellingNazi.h"
+#include <ctime>
+
 #define initSize 50000
 
 using namespace std;
 
 SpellingNazi::SpellingNazi() {
-    dict = new HashTable(initSize); //Intializes HashTable to inital size of 50k
+    dict = new HashTable(initSize);
 }
 
 SpellingNazi::~SpellingNazi() {
-    delete (dict); //Deletes HashTable to clean up program
+    delete(dict);
 }
 
-void SpellingNazi::loadWords() {
-    cout << "Dict. Name: ";
+void SpellingNazi::loadWords(){
+    cout << "Dictionary: ";
+
     string dictFName;
     cin >> dictFName;
-    ifstream dictStream(dictFName.c_str()); //Input file stream initialized to the dictionary
 
-    /**
-     * If not found, return error and exit
-     */
-    if (!dictStream) {
-        cerr << "File not found: " << dictFName << endl;
-        exit(1);
+    ifstream dictStream(dictFName.c_str());
+    
+    if(!dictStream){
+        cerr << "Dictionary not found: " << dictFName << endl;
+        exit(-1);
     }
 
-
-    /**
-     * Read from dictionary and load words to HashTable
-     */
+    clock_t t1 = clock();
     string input;
     dictStream >> input;
     while(!dictStream.eof()){
@@ -37,88 +35,84 @@ void SpellingNazi::loadWords() {
         dictStream >> input;
     }
 
-    dictStream.close(); //Safely close dictioanry file
+    clock_t t2 = clock();
+    double diff  = ((double)(t2-t1))/CLOCKS_PER_SEC;
+    cout << "Total time (in seconds) to load dictionary: " << diff << endl;
+    dictStream.close();
 }
 
-void SpellingNazi::checkFile() {
+void SpellingNazi::checkFile(){
     loadWords();
+    cout << "Input: ";
+    string inFileName;
+    cin >> inFileName;
 
-    cout << "Input file: ";
-    string inputFName;
-    cin >> inputFName;
-    ifstream inStream(inputFName.c_str()); //Input file stream initalized to file needing spell checking
-
+    ifstream inStream(inFileName.c_str());
     if (!inStream) {
-        cerr << "File not found: " << inputFName << endl;
-        exit(1);
+        cerr << "Input not found: " << inFileName << endl;
+        exit(-1);
     }
 
-    cout << "Output file: ";
-    string outputFName;
-    cin >> outputFName; 
+    cout << "Output: ";
+    string outFileName;
+    cin >> outFileName;
     ofstream outStream;
+    outStream.open(outFileName);
 
-    outStream.open(outputFName); // Output file stream to output file
-
-
-    /**
-     *  Reads input file line by line
-     *  Parses each line for words
-     *  Repeats until file is empty
-     */
     string line;
-    do {
+    clock_t t1 = clock();
+    do{
         getline(inStream, line);
         process(line, outStream);
-    } while (!inStream.eof());
+    }while(!inStream.eof());
+    clock_t t2 = clock();
 
-    inStream.close();       //Closes file streams
+    double diff = ((double)(t2-t1))/CLOCKS_PER_SEC;
+    cout << "Total time (in seconds) to check document: " << diff << endl;
+    inStream.close();
     outStream.close();
 }
 
 void SpellingNazi::process(string &line, ofstream &writer) {
-    static int lineNum = 0; //line counter
+    static int lineNum = 0;
     lineNum++;
     toLower(line);
     int start;
     string word;
-    start = splitPos(line, 0);  //finds first delimiter
-    bool containsNumber = isdigit(line[start]); //checks whether delimiter is a number
-    /**
-     * Runs through string to find words and classfiy them
-     */
-    for (int kk = start; kk <= line.size(); ++kk){
 
-        if (start == -1) break; //Checks whether line doesn't have any delimiters
-        
-        containsNumber = containsNumber || isdigit(line[kk]); // is any character is a number
+    start = firstValidCharPos(line, 0);
+    bool hasNum = isdigit(line[start]);
+    for(int kk = start; kk <= line.size(); kk++){
+        if(start == -1)
+            break;
+        hasNum = hasNum || isdigit(line[kk]);
+        if(!isValidChar(line[kk])){
+            word = line.substr(start, kk - start);
 
-        /**
-         * If character is not a valid word character, it's a delimiter. Parses word and spell checks
-         */
-        if (!(isalpha(line[kk]) || isdigit(line[kk]) || line[kk] == 45 || line[kk] == 92 || line[kk] == 39)){
-            word = line.substr(start, kk-start);
+            if(word.size() > 20)
+                writer << "Long word at line " << lineNum << ", starts: " << word.substr(0,20) << endl;
+            else if(!hasNum && !dict->contains(word))
+                writer << "Unknown word at line " << lineNum << ": " << word << endl;
 
-            if (word.size() > 20)
-                writer << "Long word at line " << lineNum << ", starts: " << word.substr(0,20) << endl; //Error message for long words
-            else if (!containsNumber && !dict->contains(word))
-                writer << "Unknown word at line " << lineNum << ": " << word << endl; //Error message for short words
-            kk = start = splitPos(line, kk);
-            containsNumber = isdigit(line[start]); //if start of word is number
+            kk = start = firstValidCharPos(line, kk);
+            hasNum = isdigit(line[start]);
         }
     }
+
 }
 
-int SpellingNazi::splitPos(string &line, int init) {
-    /**
-     * Runs through line starting at init and finds starting position
-     */
-    for (int kk = init; kk < line.size(); kk++)
-        if (isalpha(line[kk]) || isdigit(line[kk]) || line[kk] == 45 || line[kk] == 92 || line[kk] == 39)
+int SpellingNazi::firstValidCharPos(string &line, int init) {
+    for(int kk = init; kk < line.size(); kk++)
+        if(isValidChar(line[kk]))
             return kk;
-    return -1; //no starting position found
+    return -1;
 }
 
 void SpellingNazi::toLower(string &str) {
-    transform(str.begin(), str.end(), str.begin(), ::tolower);
+    for(int kk = 0; kk <str.size(); kk++)
+        str[kk] = tolower(str[kk]);
+}
+
+bool SpellingNazi::isValidChar(int charInt) {
+    return ((charInt<=90 && charInt>=65) || (charInt<=122 && charInt>=97) || (charInt<=57 && charInt>=48) || charInt== 45 || charInt == 92 || charInt== 39);
 }
