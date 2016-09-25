@@ -8,14 +8,22 @@
 class SpellingNazi {
 public:
     SpellingNazi();
+
     ~SpellingNazi();
+
     void checkFile();
+
 private:
-    HashTable* dict;
+    HashTable *dict;
+
     void loadWords();
+
     void process(string &line, ofstream &writeTo);
+
     int firstValidCharPos(string &line, int init);
+
     void toLower(string &str);
+
     bool isValidChar(int charInt);
 
 };

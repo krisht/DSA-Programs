@@ -2,9 +2,9 @@
 
 using namespace std;
 
-int main(){
+int main() {
     SpellingNazi *speller = new SpellingNazi();
-    speller->checkFile();
-    delete(speller);
+    speller->checkFile(); //Runs program
+    delete (speller); //Cleans up after program execution
     return 0;
 }
