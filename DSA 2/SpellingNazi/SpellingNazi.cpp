@@ -148,5 +148,5 @@ void SpellingNazi::toLower(string &str) {
  * @return         True if valid character. False if not
  */
 bool SpellingNazi::isValidChar(int charInt) {
-    return (isalpha(charInt) || isdigit(charInt) || charInt == 45 || charInt == 92 || charInt == 39);
+    return (isalpha(charInt) || isdigit(charInt) || charInt == 45 || charInt == 39);
 }
