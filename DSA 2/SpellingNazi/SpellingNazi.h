@@ -1,7 +1,7 @@
 #ifndef SPELLINGNAZI_SPELLINGNAZI_H
 #define SPELLINGNAZI_SPELLINGNAZI_H
 
-#include "HashTable.h"
+#include "../HashTable.h"
 #include <fstream>
 #include <algorithm>
 
