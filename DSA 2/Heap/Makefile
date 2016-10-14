@@ -1,4 +1,4 @@
-useHeap.exe: useHeap.o Heap.o HashTable.o
+useHeap: useHeap.o Heap.o HashTable.o
 	g++ -std=c++11 -o useHeap.exe useHeap.o Heap.o HashTable.o
 
 useHeap.o: useHeap.cpp
