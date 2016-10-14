@@ -6,8 +6,6 @@
 //
 
 #include <iostream>
-#include <string>
-#include <cstdlib>
 
 #include "Heap.h"
 

@@ -32,7 +32,7 @@ unsigned int HashTable::getPrime(int size) {
  * @return     True if insert was successful, else false
  */
 bool HashTable::insert(const string &key, void *pv) {
-    if(key.compare("") == 0)
+    if (key.compare("") == 0)
         return false;
 
     int pos = hash(key);
@@ -54,7 +54,6 @@ bool HashTable::insert(const string &key, void *pv) {
 
     if (((double) filled / capacity) >= loadFactor) //If loadFactor is exceeded, rehashes
         return rehash();
-
     return true;
 }
 
@@ -76,7 +75,6 @@ bool HashTable::rehash() {
     for (int kk = 0; kk < temp.size(); kk++) //Adds all item in old table to new rehashed table
         if (!temp[kk].isDeleted)
             insert(temp[kk].key, temp[kk].pv);
-
     return true;
 }
 
@@ -150,11 +148,8 @@ void *HashTable::getPointer(const string &key, bool &b) {
         b = true; //Pointer is found
         return data[pos].pv;
     }
-    else{
-        b = false; //Pointer is not found
-        return nullptr;
-    }
-
+    b = false; //Pointer is not found
+    return nullptr;
 }
 
 /**
@@ -165,13 +160,10 @@ void *HashTable::getPointer(const string &key, bool &b) {
  */
 bool HashTable::setPointer(const string &key, void *pv) {
     int pos = findPos(key);
-    if (pos != -1) {
-        data[pos].pv = pv; //Key is found. Pointer is set
-        return true;
-    }
-    else{
+    if (pos == -1)
         return false;
-    } //Key is not found
+    data[pos].pv = pv; //Key is found. Pointer is set
+    return true;
 }
 
 /**
