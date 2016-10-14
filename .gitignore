@@ -1,10 +1,5 @@
-DSA 2/SpellingNazi/CMakeCache.txt
-DSA 2/SpellingNazi/CMakeFiles/
-DSA 2/SpellingNazi/Makefile
+DSA 2/SpellingNazi/*.txt
+DSA 2/SpellingNazi/*.o
 DSA 2/SpellingNazi/SpellingNazi
-DSA 2/SpellingNazi/cmake_install.cmake
-DSA 2/SpellingNazi/lyrics.txt
-DSA 2/SpellingNazi/out.txt
-DSA 2/SpellingNazi/output.txt
-DSA 2/SpellingNazi/wordlist_small.txt
+DSA 2/Heap/*.txt
 DSA 2/Heap/*.o
