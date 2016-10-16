@@ -1,9 +1,10 @@
-//
-// This program allows the user to manipulate a binary heap.
-// The program only inserts string ids with associated keys
-// into the heap. The heap class, however, is capable of storing
-// arbitrary pointers along with each heap item.
-//
+/**
+ * Krishna Thiyagarajan
+ * DSA II - Project #2
+ * main.cpp
+ * Runner file for Heap demonstration
+ * Written by Prof. Carl Sable
+ */
 
 #include <iostream>
 

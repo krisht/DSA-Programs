@@ -1,3 +1,11 @@
+/**
+ * Krishna Thiyagarajan
+ * DSA II - Project #2
+ * SpellingNazi.h
+ * Defines data members and member functions
+ * for a simple spell checker
+ */
+
 #ifndef SPELLINGNAZI_SPELLINGNAZI_H
 #define SPELLINGNAZI_SPELLINGNAZI_H
 

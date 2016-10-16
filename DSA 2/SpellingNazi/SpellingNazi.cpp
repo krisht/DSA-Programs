@@ -1,3 +1,11 @@
+/**
+ * Krishna Thiyagarajan
+ * DSA II - Project #2
+ * SpellingNazi.cpp
+ * Implements all data members and member
+ * functions defined in SpellingNazi.h
+ */
+
 #include "SpellingNazi.h"
 
 #define initSize 50000 //Reasonable initial size for start of program

@@ -1,3 +1,10 @@
+/**
+ * Krishna Thiyagarajan
+ * DSA II - Project #2
+ * main.cpp
+ * Runner file for Spelling Checkersss
+ */
+
 #include "SpellingNazi.h"
 
 using namespace std;

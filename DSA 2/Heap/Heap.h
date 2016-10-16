@@ -1,6 +1,9 @@
-//
-// Created by krishna on 9/29/16.
-//
+/**
+ * Krishna Thiyagarajan
+ * DSA II - Project #2
+ * Heap.h
+ * Defines data members and member functions for a Heap data structure
+ */
 
 #ifndef _HEAP_H
 #define _HEAP_H
@@ -41,7 +44,7 @@ private:
         }
     };
 
-    HashTable *mapping;
+    HashTable *heapMap;
     vector<Node> data;
 
     void bubbleUp(int posCur);

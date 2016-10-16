@@ -1,3 +1,11 @@
+/**
+ * Krishna Thiyagarajan
+ * DSA II - Project #2
+ * HashTable.cpp
+ * Implements all data members and member 
+ * functions defined in HashTable.h
+ */
+
 #include "HashTable.h"
 
 #define loadFactor 0.5 //Load factor of half. Can be changed if needed

@@ -1,3 +1,11 @@
+/**
+ * Krishna Thiyagarajan
+ * DSA II - Project #2
+ * HashTable.h
+ * Defines data members and member functions
+ * for a HashTable data structure
+ */
+
 #ifndef SPELLINGNAZI_HASHTABLE_H
 #define SPELLINGNAZI_HASHTABLE_H
 

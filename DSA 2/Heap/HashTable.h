@@ -1,3 +1,10 @@
+/**
+ * Krishna Thiyagarajan
+ * DSA II - Project #2
+ * HashTable.h
+ * Defines data members and member functions for a HashTable data structure
+ */
+
 #ifndef HEAP_HASHTABLE_H
 #define HEAP_HASHTABLE_H
 
