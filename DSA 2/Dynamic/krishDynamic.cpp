@@ -15,7 +15,7 @@
 
 using namespace std;
 
-short data[MAX_SIZE][MAX_SIZE];  // Maximum size of 1001 so make matrix of that size
+short data[MAX_SIZE][MAX_SIZE];  // Maximum size string size of 1001. matrix of that size
 
 bool isMerge(string str1, string str2, string *str3) {
 
